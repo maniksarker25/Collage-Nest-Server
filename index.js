@@ -29,11 +29,12 @@ async function run() {
   try {
 
     const collageCollection = client.db('CollageNestDB').collection('collages');
-
+    // get all collages
     app.get('/collages', async(req,res)=>{
         const result = await collageCollection.find().toArray();
         res.send(result);
     })
+    // get a specific collage 
     app.get('/collages/:id', async(req,res)=>{
         const id = req.params.id;
         const query = {_id: new ObjectId(id)};
