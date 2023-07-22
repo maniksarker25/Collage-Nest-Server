@@ -29,6 +29,7 @@ async function run() {
   try {
 
     const collageCollection = client.db('CollageNestDB').collection('collages');
+    const appliedCollageCollection = client.db('CollageNestDB').collection("appliedCollage");
     // get all collages
     app.get('/collages', async(req,res)=>{
         const result = await collageCollection.find().toArray();
@@ -40,6 +41,13 @@ async function run() {
         const query = {_id: new ObjectId(id)};
         const result = await collageCollection.findOne(query);
         res.send(result);
+    })
+
+    // applied toh job 
+    app.post('/appliedCollage', async(req,res)=>{
+      const appliedCollage = req.body;
+      const result = await appliedCollageCollection.insertOne(appliedCollage);
+      res.send(result);
     })
 
     // Connect the client to the server	(optional starting in v4.7)
