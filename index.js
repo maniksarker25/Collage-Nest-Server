@@ -50,6 +50,30 @@ async function run() {
       res.send(result);
     })
 
+    // get applied collage 
+    app.get('/myCollage', async(req,res)=>{
+      let query = {};
+      if(req.query?.email){
+        query = {email: req.query.email}
+      }
+      const result = await appliedCollageCollection.find(query).toArray();
+      res.send(result);
+    })
+    // handle rating
+    app.put('/review/:id', async(req,res)=>{
+      const review = req.body;
+      const id = req.params.id;
+      // console.log(updatedRecipe)
+      const query = {_id:new ObjectId(id)};
+      const updateDoc = {
+        $set: {
+          reviewDescription:review.reviewDescription,rating:review.rating
+        },
+      }; 
+      const result = await collageCollection.updateOne(query,updateDoc);
+      res.send(result)
+    })
+
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
